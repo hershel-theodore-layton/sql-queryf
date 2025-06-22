@@ -17,7 +17,7 @@ trait QueryMethods {
     HH\FormatString<T> $format,
     mixed ...$args
   )[]: this {
-    return new static($format as string, $args);
+    return new static($format as string, vec($args));
   }
 
   public static function createWithoutTypechecking_UNSAFE(
