@@ -11,7 +11,7 @@ function queryf(
 )[]: SqlQueryf\HipHopLibSqlQueryPack {
   return SqlQueryf\HipHopLibSqlQueryPack::createWithoutTypechecking_UNSAFE(
     $format as string,
-    $args,
+    vec($args),
   );
 }
 
@@ -21,7 +21,7 @@ function queryf_to_string(
 )[]: string {
   return SqlQueryf\HipHopLibSqlQueryPack::createWithoutTypechecking_UNSAFE(
     $format as string,
-    $args,
+    vec($args),
   )
     |> ToString\engine($$->getFormat(), $$->getArguments())
     |> \vsprintf(...$$);
