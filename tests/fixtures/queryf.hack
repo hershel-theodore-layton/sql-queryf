@@ -24,5 +24,5 @@ function queryf_to_string(
     vec($args),
   )
     |> ToString\engine($$->getFormat(), $$->getArguments())
-    |> \vsprintf(...$$);
+    |> \vsprintf(...$$) as string;
 }

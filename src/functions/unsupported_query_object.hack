@@ -16,7 +16,7 @@ function unsupported_query_object(mixed $query)[]: nothing {
     'Can not render %s (as a Pack) in to-string mode. '.
     'The format and the arguments are not accessible (private). '.
     '%s is only supported when using a pack to query %s, but not for debug introspection. ',
-    \is_object($query) ? \get_class($query) : \gettype($query),
+    \is_object($query) ? \get_class($query) : \gettype($query) as string,
     SQL\Query::class,
     \AsyncMysqlConnection::class,
   );
