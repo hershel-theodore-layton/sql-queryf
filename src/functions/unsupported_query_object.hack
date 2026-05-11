@@ -5,10 +5,10 @@ use namespace HH\Lib\SQL;
 
 function unsupported_query_object(mixed $query)[]: nothing {
   invariant(
-    !$query is QueryPack,
+    !$query is PackedQuery,
     '%s contains more specifiers than the to-string mode can handle. '.
     'Expected a %s instead. You can repack the query using your `engine()` function.',
-    QueryPack::class,
+    PackedQuery::class,
     HipHopLibSqlQueryPack::class,
   );
 

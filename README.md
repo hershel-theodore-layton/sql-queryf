@@ -100,4 +100,4 @@ Congratulations on a successful migration.
 
 Now that you own the `HH\FormatString<T>` type for your queries, you may want
 to add specifiers that are not part of the set provided by `SQL\Query`.
-You can create any `engine()` and transform from `QueryPack` to `SQL\Query`.
+You can create any `engine()` and transform from `PackedQuery` to `SQL\Query`.

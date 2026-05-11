@@ -178,7 +178,7 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
           ToString\engine('%Q', vec[SqlQueryf\QueryPack::create<nothing>('')]),
       )
         ->toHaveThrown<InvariantException>(
-          'HTL\SqlQueryf\QueryPack contains more specifiers than the to-string mode can handle.',
+          'HTL\SqlQueryf\PackedQuery contains more specifiers than the to-string mode can handle.',
         );
     });
 }

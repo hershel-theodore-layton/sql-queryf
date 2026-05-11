@@ -2,8 +2,8 @@
 namespace HTL\SqlQueryf;
 
 /**
- * The "fancy" query pack that supports an open set of specifiers.
+ * Basic PackedQuery that does not need to be customized.
  */
-final class QueryPack {
+final class QueryPack implements PackedQuery {
   use QueryMethods;
 }
