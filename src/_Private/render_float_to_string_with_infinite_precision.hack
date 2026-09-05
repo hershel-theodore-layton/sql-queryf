@@ -21,7 +21,7 @@ function render_float_to_string_with_infinite_precision(
 )[]: string {
   $verbose = Str\format_number($float, 320, '.', '');
 
-  // Unable to use comparisions in the loops below,
+  // Unable to use comparisons in the loops below,
   // return the messy value.
   if ($float !== (float)$verbose) {
     return $verbose;

@@ -61,7 +61,7 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
       expect(queryf_to_string('SELECT %f', 1000. / 3.))
         ->toEqual('SELECT 333.3333333333333');
 
-      // But when there isn't, oh dear, you logged queries will contain monsters.
+      // But when there isn't, oh dear, your logged queries will contain monsters.
       expect(queryf_to_string('SELECT %f', 1.23456e300))
         ->toEqual('SELECT 123456'.Str\repeat('0', 295));
 
@@ -73,7 +73,7 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
       expect(queryf_to_string('SELECT %s', 'hi'))->toEqual('SELECT "hi"');
 
       // This depends on `fake_mysql_escape_UNSAFE`, which is not meant to
-      // escape string for real databases. It just needs to keep the string
+      // escape strings for real databases. It just needs to keep the string
       // looking right for logging and debugging.
       expect(queryf_to_string('SELECT %s', 'I have a " for you'))
         ->toEqual('SELECT "I have a \" for you"');

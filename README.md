@@ -16,9 +16,9 @@ has been mocked out with `fake_mysql_escape_UNSAFE`. **Please for all that**
 
 ## Why don't I use HH\Lib\SQL\Query’s built-in methods?
 
-If your application uses `HH\Lib\SQL\Query`, and want to use
+If your application uses `HH\Lib\SQL\Query`, and wants to use
 `toString__FOR_DEBUGGING_ONLY` for this purpose, you might tear down your
-entire hhvm instance with a segmentation fault. This method is broken and
+entire HHVM instance with a segmentation fault. This method is broken and
 should not be used. The method `toUnescapedString__FOR_DEBUGGING_ONLY__UNSAFE`
 does work, but the result is very difficult to read. Strings with quotes or
 slashes break the SQL syntax and the renderer tries to save bytes by
@@ -69,7 +69,7 @@ function query_to_native(
 )[defaults]: SQL\Query {
   $args = vec[];
 
-  foreach ($pack->getArguments() as $a) {
+  foreach ($query->getArguments() as $a) {
     if ($a is SqlQueryf\HipHopLibSqlQueryPack) {
       $args[] = query_to_native($a);
     } else {
@@ -78,7 +78,7 @@ function query_to_native(
   }
 
   return \HH\FIXME\UNSAFE_CAST<dynamic, dynamic>(SQL\Query::class)
-    |> new $$($pack->getFormat(), $args);
+    |> new $$($query->getFormat(), $args);
 }
 ```
 

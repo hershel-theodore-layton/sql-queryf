@@ -10,7 +10,7 @@ namespace HTL\SqlQueryf;
  *
  * Please do not use `TypeVisitor\visit<AnyEnum>()`
  * on this type, since the runtime will realize it has been duped.
- * 
+ *
  * @see _Private\ReferToATypeThatNotExistWithoutFatalErrors for details.
  */
 type AnyEnum = _Private\ReferToATypeThatNotExistWithoutFatalErrors<
