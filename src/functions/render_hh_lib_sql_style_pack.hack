@@ -1,7 +1,9 @@
 /** sql-queryf is MIT licensed, see /LICENSE. */
 namespace HTL\SqlQueryf;
 
+use function vsprintf;
+
 function render_hh_lib_sql_style_pack(HipHopLibSqlQueryPack $pack)[]: string {
   return ToString\engine($pack->getFormat(), $pack->getArguments())
-    |> \vsprintf(...$$) as string;
+    |> vsprintf(...$$) as string;
 }

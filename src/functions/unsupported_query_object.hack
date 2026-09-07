@@ -2,6 +2,8 @@
 namespace HTL\SqlQueryf;
 
 use namespace HH\Lib\SQL;
+use type AsyncMysqlConnection;
+use function get_class, gettype, is_object;
 
 function unsupported_query_object(mixed $query)[]: nothing {
   invariant(
@@ -16,8 +18,8 @@ function unsupported_query_object(mixed $query)[]: nothing {
     'Can not render %s (as a Pack) in to-string mode. '.
     'The format and the arguments are not accessible (private). '.
     '%s is only supported when using a pack to query %s, but not for debug introspection. ',
-    \is_object($query) ? \get_class($query) : \gettype($query) as string,
+    is_object($query) ? get_class($query) : gettype($query) as string,
     SQL\Query::class,
-    \AsyncMysqlConnection::class,
+    AsyncMysqlConnection::class,
   );
 }

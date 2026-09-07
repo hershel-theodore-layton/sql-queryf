@@ -4,6 +4,7 @@ namespace HTL\SqlQueryf\Tests;
 use namespace HH;
 use namespace HTL\{HH4Shim, SqlQueryf};
 use namespace HTL\SqlQueryf\ToString;
+use function vsprintf;
 
 function queryf(
   HH\FormatString<ToString\Sql> $format,
@@ -24,5 +25,5 @@ function queryf_to_string(
     vec($args),
   )
     |> ToString\engine($$->getFormat(), $$->getArguments())
-    |> \vsprintf(...$$) as string;
+    |> vsprintf(...$$) as string;
 }

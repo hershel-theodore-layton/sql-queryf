@@ -5,6 +5,7 @@ use namespace HH\Lib\{Math, SQL, Str};
 use namespace HTL\{SqlQueryf, TestChain};
 use namespace HTL\SqlQueryf\ToString;
 use function HTL\Expect\{expect, expect_invoked};
+use const INF;
 
 <<TestChain\Discover>>
 function usage(TestChain\Chain $chain)[]: TestChain\Chain {
@@ -42,7 +43,7 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
       // These special float values won't work in SQL, but they should show
       // up in your logging and debugging sessions. Otherwise you'd have no
       // idea what was going on.
-      expect(queryf_to_string('SELECT %f, %f, %f', Math\NAN, \INF, -\INF))
+      expect(queryf_to_string('SELECT %f, %f, %f', Math\NAN, INF, -INF))
         ->toEqual('SELECT NAN, INF, -INF');
 
       invariant(

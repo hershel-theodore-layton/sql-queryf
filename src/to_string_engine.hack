@@ -5,6 +5,7 @@ use type HTL\Pragma\Pragmas;
 
 <<file:
   Pragmas(
+    vec['PhaLinters', 'digest:938992c5a390aed5b47b'],
     vec['PhaLinters', 'fixme:camel_cased_methods_underscored_functions'],
   )>>
 
