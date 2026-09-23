@@ -8,15 +8,17 @@ function render_float(?float $float)[]: string {
     return 'NULL';
   }
 
+  if ($float === -0.0) {
+    return Str\format_number($float, 0);
+  }
+
   $simple = (string)$float;
   if (
-    $float === (float)$simple && !Str\contains($simple, 'E') ||
-    $simple === 'INF' ||
-    $simple === '-INF' ||
-    $simple === 'NAN'
+    $simple === 'INF' || $simple === '-INF' || $simple === 'NAN' ||
+    (float)$simple === $float
   ) {
     return $simple;
   }
 
-  return _Private\render_float_to_string_with_infinite_precision($float);
+  return Str\format('%.16E', $float) |> Str\strip_suffix($$, 'E+0');
 }

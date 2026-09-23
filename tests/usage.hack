@@ -37,7 +37,9 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
         'SELECT %f + %f',
         (float)Math\INT64_MIN,
         (float)Math\INT64_MAX,
-      ))->toEqual('SELECT -9223372036854775800 + 9223372036854775800');
+      ))->toEqual(
+        'SELECT -9.2233720368547758E+18 + 9.2233720368547758E+18',
+      );
     })
     ->test('Float rendering edge cases', () ==> {
       // These special float values won't work in SQL, but they should show
@@ -55,19 +57,55 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
         'See, dropping the last 6 creates a different number',
       );
       expect(queryf_to_string('SELECT %f', 1.23456789012345678901234567890))
-        ->toEqual('SELECT 1.2345678901234566');
+        ->toEqual('SELECT 1.2345678901234567');
 
-      // Luckily, there is often a sensible short number, if the exponent is
-      // close to 0, since double precision floating point does not go on forever.
       expect(queryf_to_string('SELECT %f', 1000. / 3.))
-        ->toEqual('SELECT 333.3333333333333');
+        ->toEqual('SELECT 3.3333333333333331E+2');
 
-      // But when there isn't, oh dear, your logged queries will contain monsters.
       expect(queryf_to_string('SELECT %f', 1.23456e300))
-        ->toEqual('SELECT 123456'.Str\repeat('0', 295));
+        ->toEqual('SELECT 1.23456E+300');
 
       expect(queryf_to_string('SELECT %f', 1.23456e-300))
-        ->toEqual('SELECT 0.'.Str\repeat('0', 299).'123456');
+        ->toEqual('SELECT 1.23456E-300');
+    })
+    ->testWith2Params(
+      'Native float formatting when it round trips',
+      () ==> vec[
+        tuple(1000.0, '1000'),
+        tuple(0.001, '0.001'),
+        tuple(1230000.0, '1230000'),
+        tuple(-1000.0, '-1000'),
+        tuple(1.23456e300, '1.23456E+300'),
+        tuple(1.23456e-300, '1.23456E-300'),
+      ],
+      ($value, $expected) ==> {
+        expect(SqlQueryf\render_float($value))->toEqual($expected);
+      },
+    )
+    ->test('Float round trips', () ==> {
+      foreach (
+        vec[
+          5e-324,
+          1e-321,
+          2.225073858507201e-308,
+          2.2250738585072014e-308,
+          1.7976931348623157e308,
+          1.0000000000000002,
+          0.1,
+          1e20,
+          1e-20,
+        ] as $magnitude
+      ) {
+        foreach (vec[$magnitude, -$magnitude] as $value) {
+          $rendered = SqlQueryf\render_float($value);
+          expect((float)$rendered)->toEqual($value);
+          expect(Str\length($rendered) <= 24)->toBeTrue();
+        }
+      }
+      expect(SqlQueryf\render_float(5e-324))->toEqual('4.9406564584125E-324');
+      expect(SqlQueryf\render_float(1e-321))->toEqual('9.9801260459932E-322');
+      expect(SqlQueryf\render_float(123.456))->toEqual('123.456');
+      expect(SqlQueryf\render_float(-1.0 * 0.0))->toEqual('-0');
     })
     ->test('String rendering', () ==> {
       expect(queryf_to_string('SELECT %s', null))->toEqual('SELECT NULL');
