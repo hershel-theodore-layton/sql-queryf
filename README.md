@@ -36,7 +36,7 @@ function queryf(
   mixed ...$args
 )[defaults]: QueryType {
   return \HH\FIXME\UNSAFE_CAST<dynamic, dynamic>(SQL\Query::class)
-    |> new $$($format, $args);
+    |> new $$($format, ...$args);
 }
 
 function query_to_native(QueryType $query)[]: SQL\Query {
@@ -78,7 +78,7 @@ function query_to_native(
   }
 
   return \HH\FIXME\UNSAFE_CAST<dynamic, dynamic>(SQL\Query::class)
-    |> new $$($query->getFormat(), $args);
+    |> new $$($query->getFormat(), ...$args);
 }
 ```
 
