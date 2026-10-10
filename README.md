@@ -14,7 +14,11 @@ pass the returned query to a database. This is a bad idea, since SQL escaping
 has been mocked out with `fake_mysql_escape_UNSAFE`. **Please for all that**
 **is good, don't!**
 
-## Why don't I use HH\Lib\SQL\Query’s built-in methods?
+String rendering escapes only backslashes and double quotes. It preserves
+raw newlines, NUL bytes, and terminal control bytes, including inside nested
+queries.
+
+## Why don't I use HH\Lib\SQL\Query's built-in methods?
 
 If your application uses `HH\Lib\SQL\Query`, and wants to use
 `toString__FOR_DEBUGGING_ONLY` for this purpose, you might tear down your

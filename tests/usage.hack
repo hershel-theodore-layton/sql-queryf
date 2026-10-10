@@ -207,6 +207,24 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
         ),
       ))->toEqual('SELECT * FROM `mytable` WHERE `col1` = 1 AND `col2` = 2');
     })
+    ->test('Nested percent signs and escaping', () ==> {
+      expect(queryf_to_string(
+        'SELECT %% AS percent, %Q, %s',
+        queryf(
+          '%%, %Q, %s',
+          queryf('%s', '100% "quoted" \\'),
+          "line\nNUL\0ESC\x1b%",
+        ),
+        'outer%',
+      ))->toEqual(
+        'SELECT % AS percent, %, "100% \\"quoted\\" \\\\", '.
+        "\"line\nNUL\0ESC\x1b%\", \"outer%\"",
+      );
+    })
+    ->test('String control bytes are preserved', () ==> {
+      expect(queryf_to_string('SELECT %s', "line\nNUL\0ESC\x1b"))
+        ->toEqual("SELECT \"line\nNUL\0ESC\x1b\"");
+    })
     ->test('No support for other queries', ()[defaults] ==> {
       expect_invoked(() ==> ToString\engine('%Q', vec[new SQL\Query('')]))
         ->toHaveThrown<InvariantException>(
