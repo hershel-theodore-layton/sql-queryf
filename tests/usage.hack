@@ -80,26 +80,38 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
         expect(SqlQueryf\render_float($value))->toEqual($expected);
       },
     )
-    ->test('Float round trips', () ==> {
-      foreach (
-        vec[
-          5e-324,
-          1e-321,
-          2.225073858507201e-308,
-          2.2250738585072014e-308,
-          1.7976931348623157e308,
-          1.0000000000000002,
-          0.1,
-          1e20,
-          1e-20,
-        ] as $magnitude
-      ) {
-        foreach (vec[$magnitude, -$magnitude] as $value) {
-          $rendered = SqlQueryf\render_float($value);
-          expect((float)$rendered)->toEqual($value);
-          expect(Str\length($rendered) <= 24)->toBeTrue();
+    ->testWith2Params(
+      'Float round trips',
+      () ==> {
+        $cases = dict[];
+        foreach (
+          vec[
+            5e-324,
+            1e-321,
+            2.225073858507201e-308,
+            2.2250738585072014e-308,
+            1.7976931348623157e308,
+            1.0000000000000002,
+            0.1,
+            1e20,
+            1e-20,
+          ] as $index => $magnitude
+        ) {
+          $cases[(string)$index.': '.(string)$magnitude.' positive'] =
+            tuple($magnitude, false);
+          $cases[(string)$index.': '.(string)$magnitude.' negative'] =
+            tuple($magnitude, true);
         }
-      }
+        return $cases;
+      },
+      (float $magnitude, bool $negative) ==> {
+        $value = $negative ? -$magnitude : $magnitude;
+        $rendered = SqlQueryf\render_float($value);
+        expect((float)$rendered)->toEqual($value);
+        expect(Str\length($rendered) <= 24)->toBeTrue();
+      },
+    )
+    ->test('Float rendering examples', () ==> {
       expect(SqlQueryf\render_float(5e-324))->toEqual('4.9406564584125E-324');
       expect(SqlQueryf\render_float(1e-321))->toEqual('9.9801260459932E-322');
       expect(SqlQueryf\render_float(123.456))->toEqual('123.456');
