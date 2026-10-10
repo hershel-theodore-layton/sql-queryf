@@ -14,7 +14,9 @@ function render_float(?float $float)[]: string {
 
   $simple = (string)$float;
   if (
-    $simple === 'INF' || $simple === '-INF' || $simple === 'NAN' ||
+    $simple === 'INF' ||
+    $simple === '-INF' ||
+    $simple === 'NAN' ||
     (float)$simple === $float
   ) {
     return $simple;

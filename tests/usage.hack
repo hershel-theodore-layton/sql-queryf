@@ -37,9 +37,7 @@ function usage(TestChain\Chain $chain)[]: TestChain\Chain {
         'SELECT %f + %f',
         (float)Math\INT64_MIN,
         (float)Math\INT64_MAX,
-      ))->toEqual(
-        'SELECT -9.2233720368547758E+18 + 9.2233720368547758E+18',
-      );
+      ))->toEqual('SELECT -9.2233720368547758E+18 + 9.2233720368547758E+18');
     })
     ->test('Float rendering edge cases', () ==> {
       // These special float values won't work in SQL, but they should show
